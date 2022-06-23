@@ -28,7 +28,7 @@ pipeline {
         }
         stage ('Image Push') {
             steps {
-                sh "docker push zbidis/position-simulator:${commit_id}"
+                sh "docker push zbidis:${commit_id}"
             }
         }
         stage('deploy') {
