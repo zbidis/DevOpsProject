@@ -28,7 +28,7 @@ pipeline {
         }
         stage ('Image Push') {
             steps {
-                docker  login -u "zbidis" -p "Cisco123*-+" github.com/docker.io/zbidis/position-simulator
+                sh "docker  login -u "zbidis" -p "Cisco123*-+" github.com/docker.io/zbidis/position-simulator"
                 sh "docker push szbidi/position-simulator:${commit_id}"
             }
         }
