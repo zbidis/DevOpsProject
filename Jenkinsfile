@@ -1,6 +1,9 @@
 def commit_id
 pipeline {
     agent any
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('zbidis')
+	}
     stages {
         stage('preparation') {
             steps {
@@ -26,6 +29,13 @@ pipeline {
                 echo 'docker image built'
             }
         }
+        
+        stage('Login') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
         stage ('Image Push') {
             steps {
                 
