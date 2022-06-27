@@ -63,5 +63,5 @@ pipeline {
                 sh 'kubectl apply -f workloads.yaml'
             }
         }
-    }
+    
 }
