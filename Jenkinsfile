@@ -57,22 +57,7 @@ pipeline {
                 sh 'kubectl apply -f workloads.yaml'
             }
         }
-            // Uploading Docker images into Nexus Registry
-        stage('Uploading to Nexus') {
-             steps{  
-                script {
-                    docker.withRegistry( 'http://'+registry, registryCredentials ) {
-                    dockerImage.push('szbidi/position-simulator:${commit_id}')
-          }
-        }
-      }
-    }
-         stage ('MVN DEPLOY') {
-            steps {
-                echo "Maven cpying all jar to our nexus remote repo";
-                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=nexus -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-snapshots -Dfile=target/positionsimulator-0.0.1-SNAPSHOT.jar';
-
-            }
-        }
+          
+       
      }
 }
