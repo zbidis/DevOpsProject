@@ -43,14 +43,18 @@ pipeline {
             }
         }
         
-         stage('Uploading to Nexus') {
-            steps{  
-                script {
-                    docker.withRegistry( 'http://'+registry, registryCredentials ) {
-                    dockerImage.push('szbidi/position-simulator:${commit_id}"')
-                     }
-                    }
-                }
+         stage ('MVN Install') {
+            steps {
+                echo "Maven cpying all jar to our local repo";
+                sh 'mvn install -Dmaven.test.skip=true';
+            }
+        
+         stage ('MVN DEPLOY') {
+            steps {
+                echo "Maven cpying all jar to our nexus remote repo";
+                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=tn.esprit -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-releases -Dfile=target/timesheet-devops-1.0.jar';
+
+            }
         }
         
         stage('deploy') {
