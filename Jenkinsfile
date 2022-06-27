@@ -1,6 +1,13 @@
 def commit_id
 pipeline {
     agent any
+    
+    environment {
+        imageName = "myphpapp"
+        registryCredentials = "nexus"
+        registry = "http://localhost:8081/#browse/browse/"
+        dockerImage = ''
+    }
    
     stages {
         stage('preparation') {
@@ -35,6 +42,17 @@ pipeline {
                 sh "docker push szbidi/position-simulator:${commit_id}"
             }
         }
+        
+         stage('Uploading to Nexus') {
+            steps{  
+                script {
+                    docker.withRegistry( 'http://'+registry, registryCredentials ) {
+                    dockerImage.push('szbidi/position-simulator:${commit_id}"')
+                     }
+                    }
+                }
+        }
+        
         stage('deploy') {
             steps {
                 sh "sed -i -r 's|richardchesterwood/k8s-fleetman-position-simulator:release2|szbidi/position-simulator:${commit_id}|' workloads.yaml"
