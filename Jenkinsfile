@@ -48,7 +48,7 @@ pipeline {
                 echo "Maven cpying all jar to our local repo";
                 sh 'mvn install -Dmaven.test.skip=true';
             }
-        
+         }
          stage ('MVN DEPLOY') {
             steps {
                 echo "Maven cpying all jar to our nexus remote repo";
@@ -63,5 +63,5 @@ pipeline {
                 sh 'kubectl apply -f workloads.yaml'
             }
         }
-    
+     }
 }
