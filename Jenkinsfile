@@ -49,18 +49,19 @@ pipeline {
                 sh 'mvn install -Dmaven.test.skip=true';
             }
          }
-         stage ('MVN DEPLOY') {
-            steps {
-                echo "Maven cpying all jar to our nexus remote repo";
-                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=nexus -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-snapshots -Dfile=target/positionsimulator-0.0.1-SNAPSHOT.jar';
-
-            }
-        }
+        
         
         stage('deploy') {
             steps {
                 sh "sed -i -r 's|richardchesterwood/k8s-fleetman-position-simulator:release2|szbidi/position-simulator:${commit_id}|' workloads.yaml"
                 sh 'kubectl apply -f workloads.yaml'
+            }
+        }
+         stage ('MVN DEPLOY') {
+            steps {
+                echo "Maven cpying all jar to our nexus remote repo";
+                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=nexus -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-snapshots -Dfile=target/positionsimulator-0.0.1-SNAPSHOT.jar';
+
             }
         }
      }
