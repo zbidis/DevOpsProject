@@ -43,12 +43,7 @@ pipeline {
             }
         }
         
-         stage ('MVN Install') {
-            steps {
-                echo "Maven cpying all jar to our local repo";
-                sh 'mvn install -Dmaven.test.skip=true';
-            }
-         }
+       
         
         
         stage('deploy') {
