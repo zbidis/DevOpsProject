@@ -5,7 +5,7 @@ pipeline {
     environment {
         imageName = "myphpapp"
         registryCredentials = "nexus"
-        registry = "http://localhost:8081/#browse/browse:maven-public"
+        registry = "http://localhost:8081/#browse/browse:maven-snapshots"
         dockerImage = ''
     }
    
@@ -57,6 +57,16 @@ pipeline {
                 sh 'kubectl apply -f workloads.yaml'
             }
         }
+            // Uploading Docker images into Nexus Registry
+        stage('Uploading to Nexus') {
+             steps{  
+                script {
+                    docker.withRegistry( 'http://'+registry, registryCredentials ) {
+                    dockerImage.push('szbidi/position-simulator:${commit_id}')
+          }
+        }
+      }
+    }
          stage ('MVN DEPLOY') {
             steps {
                 echo "Maven cpying all jar to our nexus remote repo";
