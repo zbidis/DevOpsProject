@@ -52,7 +52,7 @@ pipeline {
          stage ('MVN DEPLOY') {
             steps {
                 echo "Maven cpying all jar to our nexus remote repo";
-                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=tn.esprit -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-releases -Dfile=target/timesheet-devops-1.0.jar';
+                sh 'mvn -Dmaven.test.skip=true deploy:deploy-file -DgroupId=nexus -DartifactId=timesheet-devops -Dversion=1.0 -DgeneratePom=true -Dpackaging=jar -DrepositoryId=deploymentRepo -Durl=http://localhost:8081/#browse/browse:maven-releases -Dfile=target/positionsimulator-0.0.1-SNAPSHOT.jar;
 
             }
         }
