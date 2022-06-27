@@ -5,7 +5,7 @@ pipeline {
     environment {
         imageName = "myphpapp"
         registryCredentials = "nexus"
-        registry = "http://localhost:8081/#browse/browse/"
+        registry = "http://localhost:8081/#browse/browse:maven-public"
         dockerImage = ''
     }
    
