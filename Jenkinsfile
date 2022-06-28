@@ -30,23 +30,23 @@ pipeline {
         stage ("image build") {
             steps {
                 echo 'building docker image'
-                sh "docker build -t szbidi/position-simulator:${commit_id} ."
+                sh "docker build -t 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id} ."
                 echo 'docker image built'
             }
         }
         
        
-        stage ('Image Push in Dockerhub') {
-            steps {
+       // stage ('Image Push in Dockerhub') {
+          //  steps {
                 
-                sh "docker push szbidi/position-simulator:${commit_id}"
-            }
-        }
+                //sh "docker push szbidi/position-simulator:${commit_id}"
+            //}
+       // }
         
         stage ('Image Push in Nexus') {
             steps {
                 
-                sh "docker push 127.0.0.1:9001/docker-hosted/szbidi/position-simulator:${commit_id}"
+                sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
             }
         }
         
