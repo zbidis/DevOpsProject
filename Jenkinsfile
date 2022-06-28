@@ -36,10 +36,17 @@ pipeline {
         }
         
        
-        stage ('Image Push') {
+        stage ('Image Push in Dockerhub') {
             steps {
                 
                 sh "docker push szbidi/position-simulator:${commit_id}"
+            }
+        }
+        
+        stage ('Image Push in Nexus') {
+            steps {
+                
+                sh "docker push 127.0.0.1:9001/docker-hosted/szbidi/position-simulator:${commit_id}"
             }
         }
         
