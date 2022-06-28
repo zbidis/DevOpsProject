@@ -45,8 +45,8 @@ pipeline {
         
         stage ('Image Push in Nexus') {
             steps {
-                
-                sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}, admin"
+                sh "docker login –u nexusadmin –password Cisco123/*-+ 127.0.0.1:9001/docker-hosted"
+                sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
             }
         }
         
