@@ -3,9 +3,9 @@ pipeline {
     agent any
     
     environment {
-        imageName = "myphpapp"
-        registryCredentials = "nexus"
-        registry = "http://localhost:8081/#browse/browse:maven-snapshots"
+        imageName = "position-simulator:${commit_id}"
+        registryCredentials = "nexusadmin"
+        registry = "127.0.0.1:9001/docker-hosted"
         dockerImage = ''
     }
    
@@ -45,8 +45,11 @@ pipeline {
         
         stage ('Image Push in Nexus') {
             steps {
-                sh "docker login –u nexusadmin –password Cisco123/*-+ 127.0.0.1:9001/docker-hosted"
-                sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
+             
+                //sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
+                docker.withRegistry( '', registryCredential ) {
+                dockerImage.push("$BUILD_NUMBER")
+                dockerImage.push('latest')
             }
         }
         
@@ -60,6 +63,12 @@ pipeline {
             }
         }
           
-       
+       }
+        stage('Remove Unused docker image') {
+            steps{
+                sh "docker rmi $imagename:$BUILD_NUMBER"
+                sh "docker rmi $imagename:latest"
+
+      }
      }
 }
