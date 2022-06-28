@@ -48,9 +48,10 @@ pipeline {
              
                 //sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
                 docker.withRegistry( '', registryCredential ) {
-                dockerImage.push("$BUILD_NUMBER")
-                dockerImage.push('latest')
+                    dockerImage.push("$BUILD_NUMBER")
+                    dockerImage.push('latest')
             }
+        }
         }
         
        
