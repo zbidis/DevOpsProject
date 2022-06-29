@@ -46,13 +46,11 @@ pipeline {
         stage ('Image Push in Nexus') {
             steps {
              
-                //sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
-                docker.withRegistry( ecrurl, registryCredential ) {
-                    dockerImage.push("$BUILD_NUMBER")
-                    dockerImage.push('latest')
+                sh "docker push 127.0.0.1:9001/docker-hosted/position-simulator:${commit_id}"
+              
                   }
                 }
-        }
+        
         
         stage('deploy') {
             steps {
@@ -61,12 +59,6 @@ pipeline {
             }
         }
           
-        stage('Remove Unused docker image') {
-            steps{
-                sh "docker rmi $imagename:$BUILD_NUMBER"
-                sh "docker rmi $imagename:latest"
-
-      }
-     }
+        
 }
 }
